@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mamba-website-traffic-rank-estimator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mambalabsdev/mcp-website-traffic-rank-estimator"
+      ],
+      "env": {
+        "APIFY_TOKEN": "your-apify-token"
+      }
+    }
+  }
+}

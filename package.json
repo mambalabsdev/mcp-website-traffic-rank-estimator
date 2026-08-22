@@ -1,0 +1,48 @@
+{
+  "name": "@mambalabsdev/mcp-website-traffic-rank-estimator",
+  "version": "1.0.0",
+  "description": "MCP server for the Mamba Labs Website Traffic Rank Estimator actor on Apify. Get a research grade Tranco popularity rank and trend for any company domain.",
+  "type": "module",
+  "bin": {
+    "mcp-website-traffic-rank-estimator": "./build/index.js"
+  },
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x build/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "website-rank",
+    "tranco",
+    "popularity",
+    "domain-intelligence",
+    "apify",
+    "clay"
+  ],
+  "author": "Mamba Labs <labs@mambamindsetgrowth.com>",
+  "license": "MIT",
+  "homepage": "https://apify.com/mambalabs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mambalabsdev/mcp-website-traffic-rank-estimator"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.6.0"
+  },
+  "mcpName": "com.mambabuilt/mcp-website-traffic-rank-estimator"
+}

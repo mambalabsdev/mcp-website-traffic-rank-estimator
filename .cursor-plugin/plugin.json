@@ -1,0 +1,34 @@
+{
+  "name": "mcp-website-traffic-rank-estimator",
+  "displayName": "Website Traffic Rank Estimator",
+  "version": "1.0.0",
+  "description": "MCP server for the Mamba Labs Website Traffic Rank Estimator actor on Apify. Get a research grade Tranco popularity rank and trend for any company domain.",
+  "author": {
+    "name": "Mamba Labs",
+    "email": "labs@mambamindsetgrowth.com"
+  },
+  "homepage": "https://mambabuilt.com",
+  "repository": "https://github.com/mambalabsdev/mcp-website-traffic-rank-estimator",
+  "license": "MIT",
+  "logo": "https://mmg-brand-assets.netlify.app/apify-actor-pngs/apify_webhook.png",
+  "category": "productivity",
+  "tags": [
+    "website-rank",
+    "tranco",
+    "popularity",
+    "domain-intelligence",
+    "apify",
+    "clay"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "website-rank",
+    "tranco",
+    "popularity",
+    "domain-intelligence",
+    "apify",
+    "clay"
+  ],
+  "mcpServers": ".mcp.json"
+}
