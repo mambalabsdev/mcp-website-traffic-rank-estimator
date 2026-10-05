@@ -1,0 +1,118 @@
+{
+  "_provenance": {
+    "actorId": "GnOFUzlNVIoXgeJjH",
+    "buildId": "YOZlwuJyMIiKKM0Pm",
+    "buildNumber": "0.2.8",
+    "readAt": "2026-10-05T15:44:58.166Z"
+  },
+  "title": "Website Traffic Rank Estimator - Tranco Rank by Domain Input",
+  "description": "Give a company domain. Returns its Tranco rank, the date of that rank, a band, and whether it is rising or falling over the observation window. These are RANKS, not traffic estimates. Free Apify plan users get 1200 results per calendar month, reset monthly. Upgrade to any paid Apify plan for unlimited use: https://apify.com/pricing?fpr=mamba",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "company_domain": {
+      "title": "Company Domain",
+      "type": "string",
+      "description": "Bare company domain, for example stripe.com. This is the only required input and it is the join key for every other actor in the fleet.",
+      "editor": "textfield",
+      "prefill": "stripe.com"
+    },
+    "company_name": {
+      "title": "Company Name",
+      "type": "string",
+      "description": "Optional. Carried through to the output row for joining. Rank lookup is keyed on the domain alone, so the name does not change the answer.",
+      "editor": "textfield",
+      "prefill": "Stripe"
+    },
+    "sources": {
+      "title": "Sources",
+      "type": "string",
+      "description": "Which rank sources to query. Tranco is free and needs no key. Cloudflare Radar and Chrome UX Report each need your own free key, and a source you did not supply a key for reports \"skipped\" rather than \"not found\", because we did not look. Sent as a string for Clay compatibility.",
+      "editor": "select",
+      "enum": [
+        "tranco",
+        "tranco_radar",
+        "tranco_crux",
+        "all"
+      ],
+      "enumTitles": [
+        "tranco only (free, no key, default)",
+        "tranco and Cloudflare Radar (Radar needs your key)",
+        "tranco and Chrome UX Report (CrUX needs your key)",
+        "all three (both keys needed)"
+      ],
+      "default": "tranco"
+    },
+    "includeTrend": {
+      "title": "Include Trend",
+      "type": "string",
+      "description": "When \"true\" (default) the rank history Tranco already returns is used to say whether the domain is rising, falling or stable. It costs nothing extra: the history arrives in the same response. Sent as a string for Clay compatibility.",
+      "editor": "select",
+      "enum": [
+        "true",
+        "false"
+      ],
+      "enumTitles": [
+        "true (include the trend, costs nothing extra)",
+        "false (current rank only)"
+      ],
+      "default": "true"
+    },
+    "minRank": {
+      "title": "Minimum Rank Threshold",
+      "type": "string",
+      "description": "Sets rank_meets_threshold on the row, so you can filter a list to established sites without writing the comparison yourself. It never drops a row and never changes the rank returned. Sent as a string for Clay compatibility.",
+      "editor": "select",
+      "enum": [
+        "none",
+        "1000",
+        "10000",
+        "100000",
+        "1000000"
+      ],
+      "enumTitles": [
+        "none (no threshold, default)",
+        "top 1,000",
+        "top 10,000",
+        "top 100,000",
+        "top 1,000,000"
+      ],
+      "default": "none"
+    },
+    "cloudflareApiToken": {
+      "title": "Cloudflare API Token",
+      "type": "string",
+      "description": "YOUR OWN Cloudflare API token, free to create at dash.cloudflare.com. OPTIONAL and only used when sources includes Radar. Marked secret, so the value never renders on this page.",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "cruxApiKey": {
+      "title": "Chrome UX Report API Key",
+      "type": "string",
+      "description": "YOUR OWN Google API key with the Chrome UX Report API enabled, free at console.cloud.google.com. OPTIONAL and only used when sources includes CrUX. Marked secret, so the value never renders on this page.",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "skipCache": {
+      "title": "Skip Cache",
+      "type": "string",
+      "description": "When \"false\" (default) a successful lookup is cached for seven days and reused, which costs you nothing on a repeated run. Set \"true\" to force a fresh fetch. Sent as a string for Clay compatibility.",
+      "editor": "select",
+      "enum": [
+        "false",
+        "true"
+      ],
+      "enumTitles": [
+        "false (use cache)",
+        "true (force fresh)"
+      ],
+      "default": "false"
+    },
+    "source_tag": {
+      "title": "Source Tag",
+      "type": "string",
+      "description": "Internal attribution tag set by Mamba Labs on published task examples. Not required, and nothing depends on it. Leave it empty.",
+      "editor": "textfield"
+    }
+  }
+}
