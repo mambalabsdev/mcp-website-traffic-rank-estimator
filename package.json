@@ -14,7 +14,9 @@
   ],
   "scripts": {
     "build": "tsc && chmod +x build/index.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && node --test test/*.test.js",
+    "sync-fixture": "node scripts/sync-input-schema-fixture.mjs"
   },
   "keywords": [
     "mcp",
