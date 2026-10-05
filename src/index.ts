@@ -36,10 +36,11 @@ function boolToString(v: boolean | undefined): string | undefined {
   return v === undefined ? undefined : v ? "true" : "false";
 }
 
-// The actor run's own timeout, in seconds, unchanged from the earlier run-sync
-// call. The run ends TIMED-OUT at this limit and the caller is told so, with
-// the run id, instead of a 408 while the run carries on.
-const ACTOR_RUN_TIMEOUT_SECS = 300;
+// How long the actor run itself is allowed to take, in seconds. One value for
+// every Mamba Labs wrapper, set 2026-10-05: start and poll exists so a long run
+// survives, and a shorter limit would end the long runs it was built for. Past
+// this limit the run ends TIMED-OUT and the caller is told so, with the run id.
+const ACTOR_RUN_TIMEOUT_SECS = 1800;
 
 // How long this wrapper waits for that run, in milliseconds. The actor's own
 // timeout plus two minutes, so the run's own TIMED-OUT status is what the
