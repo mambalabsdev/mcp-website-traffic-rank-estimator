@@ -1,6 +1,6 @@
 {
   "name": "@mambalabsdev/mcp-website-traffic-rank-estimator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MCP server for the Mamba Labs Website Traffic Rank Estimator actor on Apify. Get a research grade Tranco popularity rank and trend for any company domain.",
   "type": "module",
   "bin": {
