@@ -6,6 +6,16 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
+// Optional per call spending cap, passed through to the actor's own max_charge_usd
+// input. The actor enforces it; this wrapper only forwards it when set.
+const MAX_CHARGE_USD = z
+  .number()
+  .min(0)
+  .optional()
+  .describe(
+    "Optional spending cap for this call, in USD, passed to the actor as max_charge_usd. The run stops before any charge that would take it past this amount and keeps every row already charged. Leave empty to rely only on the maximum charge per run set on your Apify account.",
+  );
+
 const here = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
   readFileSync(join(here, "..", "package.json"), "utf8"),
@@ -77,7 +87,9 @@ async function runActor(
   actorPath: string,
   actorLabel: string,
   input: Record<string, unknown>,
+  maxChargeUsd?: number,
 ): Promise<ToolResult> {
+  if (maxChargeUsd !== undefined) input = { ...input, max_charge_usd: maxChargeUsd };
   const APIFY_TOKEN = process.env.APIFY_TOKEN;
   if (!APIFY_TOKEN) {
     return { isError: true, content: [{ type: "text", text: "APIFY_TOKEN is not set. Create a token at https://console.apify.com/account/integrations and set it as the APIFY_TOKEN environment variable." }] };
@@ -218,7 +230,7 @@ server.registerTool(
       "Return a research grade popularity RANK for a company domain from the public Tranco list, with the date of that rank, an honest band (top_1k through beyond_1m) and a rising, falling or stable trend over roughly forty daily observations. Returns one flat Clay ready row. THESE ARE RANKS, NOT TRAFFIC: a rank does not convert to visits and this tool will never return a visit count. A lower rank number is better, so the trend is given in words rather than as a signed number. Most B2B domains are not on the list at all and return not_found, which is normal rather than disqualifying. Read only; requires an APIFY_TOKEN and consumes Apify credits per call.",
     annotations: {
       title: "Estimate Website Traffic Rank",
-      readOnlyHint: true,
+      readOnlyHint: false,
       destructiveHint: false,
       idempotentHint: true,
       openWorldHint: true,
@@ -248,9 +260,10 @@ server.registerTool(
       skipCache: z.boolean()
         .optional()
         .describe("When \"false\" (default) a successful lookup is cached for seven days and reused, which costs you nothing on a repeated run. Set \"true\" to force a fresh fetch. Sent as a string for Clay compatibility."),
+      max_charge_usd: MAX_CHARGE_USD,
     },
   },
-  async ({ company_domain, company_name, sources, includeTrend, minRank, cloudflareApiToken, cruxApiKey, skipCache }) => {
+  async ({ company_domain, company_name, sources, includeTrend, minRank, cloudflareApiToken, cruxApiKey, skipCache, max_charge_usd }) => {
     return runActor(
       "GnOFUzlNVIoXgeJjH",
       "Website Traffic Rank Estimator",
@@ -264,7 +277,7 @@ server.registerTool(
         cruxApiKey,
         skipCache: boolToString(skipCache),
       }),
-    );
+     max_charge_usd,);
   },
 );
 
