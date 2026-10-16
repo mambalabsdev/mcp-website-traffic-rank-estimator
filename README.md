@@ -14,6 +14,7 @@ An MCP server that returns a research grade Tranco popularity rank and trend for
 - [Output](#output)
 - [Example output](#example-output)
 - [Features](#features)
+- [Pricing](#pricing)
 - [Full actor documentation](#full-actor-documentation)
 - [Mamba Labs GTM Suite](#mamba-labs-gtm-suite)
 - [License](#license)
@@ -72,6 +73,7 @@ Get your token at https://console.apify.com/account/integrations, paste it in, a
 - `cloudflareApiToken` (optional): your own Cloudflare API token, free to create at dash.cloudflare.com. Used only when `sources` includes Radar.
 - `cruxApiKey` (optional): your own Google API key with the Chrome UX Report API enabled, free at console.cloud.google.com. Used only when `sources` includes CrUX.
 - `skipCache` (optional): when false (the default) a successful lookup is cached for seven days and reused. Set true to force a fresh fetch.
+- `max_charge_usd` (optional): spending cap for this call, in USD. The actor stops before any charge that would take the run past this amount and keeps every row already charged.
 
 ## Output
 
@@ -112,6 +114,18 @@ The tool returns the actor's flat JSON row for the company, with 20 snake_case f
 - Optional Cloudflare Radar and Chrome UX Report sources with your own keys
 - Never returns a visit count, because a rank is not traffic
 - 20 flat snake_case fields, one row per company
+
+## Pricing
+
+You pay per event on Apify, billed to your own Apify account. Prices from the live pricing record, read 2026-10-16:
+
+| Event | Price per event (USD) | Fires when |
+| --- | --- | --- |
+| `apify-actor-start` | $0.00005 | Charged when the Actor starts running. Number of events charged depends on Actor memory (one event per GB, minimum one event). |
+| `company-checked` | $0.0025 on the Free plan, down to $0.00175 on higher Apify plans | Once per company for which the rank lookup completed and a non degraded row was produced, whether or not anything was found. A not_found row fires this event, because looking and finding nothing is a real answer and it is the work you asked for. A degraded row, where the lookup could not run at all, fires nothing. |
+| `rank-resolved` | $0.002 on the Free plan, down to $0.0014 on higher Apify plans | Once per company where a numeric rank was returned by at least one source and banded. Does not fire when the domain is absent from every source queried, which is a real answer and is covered by the check event. |
+
+The [actor's Apify page](https://apify.com/mambalabs/website-traffic-rank-estimator) carries the current prices. Running this server consumes Apify credits.
 
 ## Full actor documentation
 
